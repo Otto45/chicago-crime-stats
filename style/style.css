@@ -1,0 +1,68 @@
+.app-body {
+    background-color: #2B3A42;
+    /* 70px header + 45px footer */
+    height: calc(100vh - 115px);
+    padding-top: 15px;
+}
+
+.app-body span,
+.app-body p,
+.app-body label,
+.app-body h1,
+.app-body h2,
+.app-body h3,
+.app-body h4,
+.app-body h5
+.app-body h6
+{
+    color: #ffffff;
+}
+
+.navbar {
+    padding-right: 20px;
+    padding-left: 20px;
+    margin-bottom: 0 !important;
+    min-height: 0 !important;
+    height: 70px;
+}
+
+.navbar-inverse span,
+.navbar-inverse p,
+.navbar-inverse label,
+.navbar-inverse h1,
+.navbar-inverse h2,
+.navbar-inverse h3,
+.navbar-inverse h4,
+.navbar-inverse h5
+.navbar-inverse h6
+{
+    color: #ffffff;
+}
+
+.footer {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    background-color: #535353;
+    border: 1px solid transparent;
+    border-color: #080808;
+    height: 45px;
+}
+
+.footer span,
+.footer p,
+.footer label,
+.footer h1,
+.footer h2,
+.footer h3,
+.footer h4,
+.footer h5
+.footer h6
+{
+    color: #ffffff;
+}
+
+.btn-login{
+    margin-top: 17px;
+}
