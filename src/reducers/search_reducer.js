@@ -1,4 +1,4 @@
-import {GET_YEARS, GET_TYPES, GET_LOCATION_DESCRIPTIONS} from '../actions/search_actions';
+import {GET_YEARS, GET_TYPES, GET_LOCATION_DESCRIPTIONS, GET_CRIMES} from '../actions/search_actions';
 
 const defaultState = {
     year: 0,
@@ -7,7 +7,7 @@ const defaultState = {
     typeOptions: [],
     locationDescription: '',
     locationDescriptions: [],
-    results: []
+    crimes: []
 }
 
 export default function(state = defaultState, action){
@@ -18,6 +18,8 @@ export default function(state = defaultState, action){
             return Object.assign({}, state, { typeOptions: action.payload.data });
         case GET_LOCATION_DESCRIPTIONS:
             return Object.assign({}, state, { locationDescriptions: action.payload.data });
+        case GET_CRIMES:
+            return Object.assign({}, state, { crimes: action.payload.data });
         default:
             return state;
     }

@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getYears, getTypes, getLocationDescriptions } from '../actions/search_actions';
+import { getYears, getTypes, getLocationDescriptions, getCrimes } from '../actions/search_actions';
 import { connect } from 'react-redux';
+import vis from 'vis';
 
 class Home extends Component {
-    
+
     componentDidMount(){
         this.props.getYears();
         this.props.getTypes();
         this.props.getLocationDescriptions();
+        this.props.getCrimes();
     }
 
     generateYearListItems(){
@@ -61,18 +63,24 @@ class Home extends Component {
                         </select>
                     </div>
                 </div>
+                <div className="row">
+                  <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <div id="crimesGraph"></div>
+                  </div>
+                </div>
             </div>
         );
     }
 }
 
 const mapStateToProps = state => {
-    
+
     return {
         years: state.search.yearOptions,
         types: state.search.typeOptions,
-        locationDescriptions: state.search.locationDescriptions
+        locationDescriptions: state.search.locationDescriptions,
+        crimes: state.search.crimes
     }
 }
 
-export default connect(mapStateToProps, {getYears, getTypes, getLocationDescriptions})(Home);
+export default connect(mapStateToProps, {getYears, getTypes, getLocationDescriptions, getCrimes})(Home);

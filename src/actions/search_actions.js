@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export const GET_TYPES = 'get-types';
-export const GET_DESCRIPTIONS = 'get-descriptions';
 export const GET_LOCATION_DESCRIPTIONS = 'get-location-descriptions';
 export const GET_YEARS = 'get-years';
 export const GET_CRIMES = 'get-crimes';
@@ -34,8 +33,8 @@ export function getLocationDescriptions(primaryType, description){
     };
 }
 
-export function getCrimes(year, primaryType, location, locationDescription){
-    const request = axios.get('url_here');
+export function getCrimes(year='', primaryType='', locationDescription=''){
+    const request = axios.get(`${URL_BASE}/crimes?year=${year}&primaryType=${primaryType}&locationDescription=${locationDescription}`);
 
     return{
         type: GET_CRIMES,
