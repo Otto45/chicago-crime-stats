@@ -1,10 +1,12 @@
 import axios from 'axios';
+import _ from 'lodash';
 
 export const GET_TYPES = 'get-types';
 export const GET_LOCATION_DESCRIPTIONS = 'get-location-descriptions';
 export const GET_YEARS = 'get-years';
 export const GET_CRIMES = 'get-crimes';
 
+const TAKE = 10000;
 const URL_BASE = 'https://uycy8d15y2.execute-api.us-east-1.amazonaws.com/dev';
 
 export function getYears(){
@@ -34,10 +36,42 @@ export function getLocationDescriptions(primaryType, description){
 }
 
 export function getCrimes(year='', primaryType='', locationDescription=''){
-    const request = axios.get(`${URL_BASE}/crimes?year=${year}&primaryType=${primaryType}&locationDescription=${locationDescription}`);
+  return dispatch => {
+    axios.get(`${URL_BASE}/crimescount`)
+      .then(res => {
+        const totalCrimes = res.data[0].count;
+        let numApiCalls = Math.floor(totalCrimes / TAKE);
+        if(totalCrimes % TAKE > 0){
+          numApiCalls++;
+        }
 
-    return{
-        type: GET_CRIMES,
-        payload: request
-    }
+        if(numApiCalls <= 0){
+          return;
+        }
+
+        let query = `${URL_BASE}/crimes?year=${year}&primaryType=${primaryType}&locationDescription=${locationDescription}&take=${TAKE}`;
+
+        let requests = [];
+        for(let i = 0; i < numApiCalls; i++){
+          requests.push(axios.get(`${query}&skip=${TAKE * i}`));
+        }
+
+        axios.all(requests)
+          .then((allRes) => {
+            let crimes = [];
+            _.forEach(allRes, indRes => {
+              _.forEach(indRes.data, crime => {
+                crimes.push(crime);
+              })
+            });
+
+            dispatch(() => {
+              return {
+                type: GET_CRIMES,
+                payload: crimes
+              };
+            });
+          });
+      });
+  };
 }
