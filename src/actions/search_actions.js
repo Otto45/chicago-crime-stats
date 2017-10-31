@@ -65,11 +65,9 @@ export function getCrimes(year='', primaryType='', locationDescription=''){
               })
             });
 
-            dispatch(() => {
-              return {
-                type: GET_CRIMES,
-                payload: crimes
-              };
+            dispatch({
+              type: GET_CRIMES,
+              payload: crimes
             });
           });
       });

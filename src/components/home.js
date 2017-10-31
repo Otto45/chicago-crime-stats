@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { getYears, getTypes, getLocationDescriptions, getCrimes } from '../actions/search_actions';
 import { connect } from 'react-redux';
-import vis from 'vis';
+import CrimesGraph from './crimes_graph';
+
 
 class Home extends Component {
 
-    componentDidMount(){
+    componentWillMount(){
         this.props.getYears();
         this.props.getTypes();
         this.props.getLocationDescriptions();
@@ -63,11 +64,7 @@ class Home extends Component {
                         </select>
                     </div>
                 </div>
-                <div className="row">
-                  <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                    <div id="crimesGraph"></div>
-                  </div>
-                </div>
+                <CrimesGraph crimes={this.props.crimes} types={this.props.types}/>
             </div>
         );
     }

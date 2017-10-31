@@ -26,6 +26,7 @@
     "axios": "^0.16.1",
     "babel-preset-stage-1": "^6.24.1",
     "lodash": "^4.17.4",
+    "plotly": "^1.0.6",
     "promise": "^8.0.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",

@@ -19,7 +19,6 @@ export default function(state = defaultState, action){
         case GET_LOCATION_DESCRIPTIONS:
             return Object.assign({}, state, { locationDescriptions: action.payload.data });
         case GET_CRIMES:
-            debugger;
             return Object.assign({}, state, { crimes: action.payload });
         default:
             return state;
