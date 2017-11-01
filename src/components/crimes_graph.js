@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import vis from 'vis';
+import Plotly from 'plotly';
 import _ from 'lodash';
+import HashMap from 'hashmap';
 
 const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", 
 "July", "August", "September", "October", "November", "December"];
@@ -11,31 +12,39 @@ class CrimesGraph extends Component {
   constructor(props){
     super(props);
 
+    this.state = {
+      crimeTypeToArrayPos: new HashMap(),
+      crimeTypesModelArray: [],
+      crimeTypesCountsModelArray: []
+    };
+
+    // Create a hashmap between crime type name and array position in x below, 
+    // to quickly determine corresponding position in y to update count of crime type 
     if(this.props.types && this.props.types > 0){
-      // TODO: Create a hashmap between type name and array position number
+      _.forEach(this.props.types, (type, index) => {
+        this.state.crimeTypeToArrayPos.set(type.PrimaryType, index);
+        this.state.crimeTypesModelArray.push(type.PrimaryType);
+        this.state.crimeTypesCountsModelArray.push(0);
+      });
     }
   }  
 
   renderGraph(crimes){
-    let months = [];
-    for(let i = 0; i < 12; i++){
-      months.push({
-        x: [],
-        y: [],
-        name: MONTH_NAMES[i],
+    let data = [];
+    _.times(12, (index) => {
+      data.push({
+        x: _.clone(this.state.crimeTypesModelArray),
+        y: _.clone(this.state.crimeTypesCountsModelArray),
+        name: MONTH_NAMES[index],
         type: TRACE_TYPE
       });
-    }
-
-    _.forEach(crime => {
-        if(!months[x][crime.type]){
-
-        }
     });
 
-    var dataset = new vis.DataSet(crimes);
+    _.forEach(crimes, crime => {
+      data[crime.month].y[this.state.crimeTypeToArrayPos(crime.type)]++;
+    });
 
-    var graph2d = new vis.Graph2d(document.getElementById('crimesGraph'), dataset);
+    Plotly.plot('crimesGraph', data, { barmode: 'group' });
   }
 
   componentDidMount(){
