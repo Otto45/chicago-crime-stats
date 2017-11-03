@@ -25,6 +25,7 @@
     "aws-sdk": "^2.82.0",
     "axios": "^0.16.1",
     "babel-preset-stage-1": "^6.24.1",
+    "chart.js": "^2.7.1",
     "hashmap": "^2.3.0",
     "lodash": "^4.17.4",
     "plotly": "^1.0.6",

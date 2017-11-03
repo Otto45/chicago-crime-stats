@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Plotly from 'plotly';
+import Chart from 'chart.js';
 import _ from 'lodash';
 import HashMap from 'hashmap';
 
@@ -13,51 +13,55 @@ class CrimesGraph extends Component {
     super(props);
 
     this.state = {
-      crimeTypeToArrayPos: new HashMap(),
-      crimeTypesModelArray: [],
-      crimeTypesCountsModelArray: []
+      crimeTypeToArrayPos: null,
     };
-
-    // Create a hashmap between crime type name and array position in x below, 
-    // to quickly determine corresponding position in y to update count of crime type 
-    if(this.props.types && this.props.types > 0){
-      _.forEach(this.props.types, (type, index) => {
-        this.state.crimeTypeToArrayPos.set(type.PrimaryType, index);
-        this.state.crimeTypesModelArray.push(type.PrimaryType);
-        this.state.crimeTypesCountsModelArray.push(0);
-      });
-    }
   }  
 
-  renderGraph(crimes){
-    let data = [];
-    _.times(12, (index) => {
-      data.push({
-        x: _.clone(this.state.crimeTypesModelArray),
-        y: _.clone(this.state.crimeTypesCountsModelArray),
-        name: MONTH_NAMES[index],
-        type: TRACE_TYPE
-      });
+  renderGraph(crimes, types){
+    let xAxis = [];
+    let yAxis = [];
+
+    _.forEach(types, type => {
+      xAxis.push(type.PrimaryType);
+      yAxis.push(0);
     });
 
     _.forEach(crimes, crime => {
-      data[crime.month].y[this.state.crimeTypeToArrayPos(crime.type)]++;
+      yAxis[this.state.crimeTypeToArrayPos.get(crime.type)]++;
     });
 
-    Plotly.plot('crimesGraph', data, { barmode: 'group' });
-  }
+    let element = document.getElementById('crimesGraph');
+    let options = {
+      type: 'bar',
+      data: {
+        labels: xAxis,
+        datasets: {
+          data: yAxis
+        }
+      }
+    };
 
-  componentDidMount(){
-    if(this.props.crimes && this.props.crimes.length > 0)
-    {
-      //this.renderGraph(this.props.crimes);
-    }
+    let chart = new Chart(element, options);
   }
 
   componentDidUpdate(){
-    if(this.props.crimes && this.props.crimes.length > 0)
+    // Create a hashmap between crime type name and array position in x below, 
+    // to quickly determine corresponding position in y to update count of crime type
+    if(this.props.types && this.props.types.length > 0 && this.state.crimeTypeToArrayPos == null){
+      let hashMap = new HashMap();
+      
+      _.forEach(this.props.types, (type, index) => {
+        hashMap.set(type.PrimaryType, index);
+      });
+
+      this.setState({crimeTypeToArrayPos: hashMap});
+    }
+
+    if(this.state.crimeTypeToArrayPos !== null 
+      && this.props.crimes && this.props.crimes.length > 0
+      && this.props.types && this.props.types.length > 0)
     {
-      //this.renderGraph(this.props.crimes);
+      this.renderGraph(this.props.crimes, this.props.types);
     }
   }
 
@@ -65,7 +69,7 @@ class CrimesGraph extends Component {
     return(
       <div className="row">
         <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-          <div id="crimesGraph"></div>
+          <canvas height="1000" width="2000" id="crimesGraph"></canvas>
         </div>
       </div>
     );

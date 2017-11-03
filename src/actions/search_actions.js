@@ -53,7 +53,7 @@ export function getCrimes(year='', primaryType='', locationDescription=''){
 
         let requests = [];
         for(let i = 0; i < numApiCalls; i++){
-          requests.push(axios.get(`${query}&skip=${TAKE * i}`));
+          requests.push(axios.get(`${query}&skip=${TAKE * i}`, {timeout: 30000}));
         }
 
         axios.all(requests)
