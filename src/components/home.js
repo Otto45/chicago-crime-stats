@@ -64,6 +64,8 @@ class Home extends Component {
                         </select>
                     </div>
                 </div>
+                <br/>
+                <br/>
                 <CrimesGraph crimes={this.props.crimes} types={this.props.types}/>
             </div>
         );
