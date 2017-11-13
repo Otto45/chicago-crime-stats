@@ -78,13 +78,17 @@ class CrimesGraph extends Component {
     {
       this.renderGraph(this.props.crimes, this.props.types);
       $('#graphArea').removeClass('hidden');
+      $('#graphArea').addClass('hidden');
+    } else {
+      $('#graphArea').addClass('hidden');
+      $('#graphArea').removeClass('hidden');
     }
   }
 
   render(){
     return(
       <div>
-        <div>
+        <div id="spinner">
           <img src="/content/images/spinner.gif" alt="Loading..."/>
         </div>
         <div id="graphArea" className="row hidden">
