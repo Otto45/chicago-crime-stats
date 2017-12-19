@@ -10,32 +10,24 @@ class Home extends Component {
     componentWillMount(){
         this.props.getYears();
         this.props.getTypes();
-        this.props.getLocationDescriptions();
         this.props.getCrimes();
     }
 
     generateYearListItems(){
         if(this.props.years && this.props.years.length > 0){
             return this.props.years.map(data => {
-                return (<option key={data.Year} value={data.Year}>{data.Year}</option>);
+                if(data.Year === this.props.year){
+                    return (<option key={data.Year} value={data.Year} selected="selected">{data.Year}</option>);
+                } else {
+                    return (<option key={data.Year} value={data.Year}>{data.Year}</option>);
+                }
             });
         }
     }
 
-    generateTypeListItems(){
-        if(this.props.types && this.props.types.length > 0){
-            return this.props.types.map(data => {
-                return (<option key={data.PrimaryType} value={data.PrimaryType}>{data.PrimaryType}</option>);
-            });
-        }
-    }
-
-    generateLocDescrListItems(){
-        if(this.props.locationDescriptions && this.props.locationDescriptions.length > 0){
-            return this.props.locationDescriptions.map(data => {
-                return (<option key={data.LocationDescription} value={data.LocationDescription}>{data.LocationDescription}</option>);
-            });
-        }
+    changeYear(event){
+        var selectedYear = event.currentTarget.value;
+        this.props.getCrimes(selectedYear);
     }
 
     render(){
@@ -44,23 +36,9 @@ class Home extends Component {
                 <div className="row">
                     <div className="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                         <label>Select Year</label>
-                        <select className="form-control">
+                        <select className="form-control" onChange={this.changeYear.bind(this)}>
                             <option></option>
                             {this.generateYearListItems()}
-                        </select>
-                    </div>
-                    <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                        <label>Select Crime Type</label>
-                        <select className="form-control">
-                            <option></option>
-                            {this.generateTypeListItems()}
-                        </select>
-                    </div>
-                    <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                        <label>Select Location Description</label>
-                        <select className="form-control">
-                            <option></option>
-                            {this.generateLocDescrListItems()}
                         </select>
                     </div>
                 </div>
@@ -76,10 +54,10 @@ const mapStateToProps = state => {
 
     return {
         years: state.search.yearOptions,
+        year: state.search.year,
         types: state.search.typeOptions,
-        locationDescriptions: state.search.locationDescriptions,
         crimes: state.search.crimes
     }
 }
 
-export default connect(mapStateToProps, {getYears, getTypes, getLocationDescriptions, getCrimes})(Home);
+export default connect(mapStateToProps, {getYears, getTypes, getCrimes})(Home);

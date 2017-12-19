@@ -13,7 +13,7 @@ class CrimesGraph extends Component {
     super(props);
 
     this.state = {
-      crimeTypeToArrayPos: null,
+      crimeTypeToArrayPos: null
     };
   }
 
@@ -78,17 +78,17 @@ class CrimesGraph extends Component {
     {
       this.renderGraph(this.props.crimes, this.props.types);
       $('#graphArea').removeClass('hidden');
-      $('#graphArea').addClass('hidden');
+      $('#spinner').addClass('hidden');
     } else {
       $('#graphArea').addClass('hidden');
-      $('#graphArea').removeClass('hidden');
+      $('#spinner').removeClass('hidden');
     }
   }
 
   render(){
     return(
       <div>
-        <div id="spinner">
+        <div id="spinner" className="text-center">
           <img src="/content/images/spinner.gif" alt="Loading..."/>
         </div>
         <div id="graphArea" className="row hidden">

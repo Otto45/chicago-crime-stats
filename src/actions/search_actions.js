@@ -2,7 +2,6 @@ import axios from 'axios';
 import _ from 'lodash';
 
 export const GET_TYPES = 'get-types';
-export const GET_LOCATION_DESCRIPTIONS = 'get-location-descriptions';
 export const GET_YEARS = 'get-years';
 export const GET_CRIMES = 'get-crimes';
 
@@ -22,15 +21,6 @@ export function getTypes(){
 
     return{
         type: GET_TYPES,
-        payload: request
-    };
-}
-
-export function getLocationDescriptions(primaryType, description){
-    const request = axios.get(`${URL_BASE}/locationdescriptions`);
-
-    return{
-        type: GET_LOCATION_DESCRIPTIONS,
         payload: request
     };
 }
@@ -67,7 +57,8 @@ export function getCrimes(year='', primaryType='', locationDescription=''){
 
             dispatch({
               type: GET_CRIMES,
-              payload: crimes
+              payload: crimes,
+              year: year
             });
           });
       });
